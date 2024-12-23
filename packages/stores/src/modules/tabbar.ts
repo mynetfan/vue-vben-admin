@@ -1,7 +1,7 @@
 import type { TabDefinition } from '@vben-core/typings';
 import type { Router, RouteRecordNormalized } from 'vue-router';
 
-import { toRaw } from 'vue';
+import { nextTick, toRaw } from 'vue';
 
 import {
   openRouteInNewWindow,
@@ -147,6 +147,12 @@ export const useTabbarStore = defineStore('core-tabbar', {
       this.updateCacheTabs();
     },
     /**
+     * @zh_CN 清除缓存标签页
+     */
+    clearCacheTabs() {
+      this.cachedTabs.clear();
+    },
+    /**
      * @zh_CN 关闭所有标签页
      */
     async closeAllTabs(router: Router) {
@@ -200,6 +206,7 @@ export const useTabbarStore = defineStore('core-tabbar', {
       }
       await this._bulkCloseByPaths(paths);
     },
+
     /**
      * @zh_CN 关闭右侧标签页
      * @param tab
@@ -275,7 +282,6 @@ export const useTabbarStore = defineStore('core-tabbar', {
         await this.closeTab(tab, router);
       }
     },
-
     /**
      * 根据路径获取标签页
      * @param path
@@ -285,6 +291,7 @@ export const useTabbarStore = defineStore('core-tabbar', {
         (item) => getTabPath(item) === path,
       ) as TabDefinition;
     },
+
     /**
      * @zh_CN 新窗口打开标签页
      * @param tab
@@ -328,6 +335,8 @@ export const useTabbarStore = defineStore('core-tabbar', {
       this.excludeCachedTabs.add(name as string);
       this.renderRouteView = false;
       startProgress();
+
+      await nextTick();
 
       await new Promise((resolve) => setTimeout(resolve, 200));
 
@@ -379,7 +388,6 @@ export const useTabbarStore = defineStore('core-tabbar', {
         await this.updateCacheTabs();
       }
     },
-
     setUpdateTime() {
       this.updateTime = Date.now();
     },
@@ -397,6 +405,7 @@ export const useTabbarStore = defineStore('core-tabbar', {
       this.tabs.splice(newIndex, 0, currentTab);
       this.dragEndIndex = this.dragEndIndex + 1;
     },
+
     /**
      * @zh_CN 切换固定标签页
      * @param tab
@@ -430,7 +439,6 @@ export const useTabbarStore = defineStore('core-tabbar', {
       // 交换位置重新排序
       await this.sortTabs(index, newIndex);
     },
-
     /**
      * 根据当前打开的选项卡更新缓存
      */
