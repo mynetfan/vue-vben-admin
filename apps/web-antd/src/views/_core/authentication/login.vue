@@ -13,36 +13,34 @@ defineOptions({ name: 'Login' });
 
 const authStore = useAuthStore();
 
-const MOCK_USER_OPTIONS: BasicOption[] = [
-  {
-    label: 'Super',
-    value: 'vben',
-  },
+const PRESET_COMPANY: BasicOption[] = [
   {
     label: 'Admin',
     value: 'admin',
   },
   {
-    label: 'User',
-    value: 'jack',
+    label: 'Test',
+    value: 'test001',
   },
 ];
 
 const formSchema = computed((): VbenFormSchema[] => {
   return [
     {
-      component: 'VbenSelect',
+      component: 'Select',
       componentProps: {
-        options: MOCK_USER_OPTIONS,
+        options: PRESET_COMPANY,
         placeholder: $t('authentication.selectAccount'),
+        class: 'w-full',
+        size: 'large',
       },
-      fieldName: 'selectAccount',
+      fieldName: 'company',
       label: $t('authentication.selectAccount'),
       rules: z
         .string()
         .min(1, { message: $t('authentication.selectAccount') })
         .optional()
-        .default('vben'),
+        .default('test001'),
     },
     {
       component: 'VbenInput',
@@ -51,9 +49,9 @@ const formSchema = computed((): VbenFormSchema[] => {
       },
       dependencies: {
         trigger(values, form) {
-          if (values.selectAccount) {
-            const findUser = MOCK_USER_OPTIONS.find(
-              (item) => item.value === values.selectAccount,
+          if (values.company) {
+            const findUser = PRESET_COMPANY.find(
+              (item) => item.value === values.company,
             );
             if (findUser) {
               form.setValues({
@@ -63,7 +61,7 @@ const formSchema = computed((): VbenFormSchema[] => {
             }
           }
         },
-        triggerFields: ['selectAccount'],
+        triggerFields: ['company'],
       },
       fieldName: 'username',
       label: $t('authentication.username'),
@@ -81,9 +79,7 @@ const formSchema = computed((): VbenFormSchema[] => {
     {
       component: markRaw(SliderCaptcha),
       fieldName: 'captcha',
-      rules: z.boolean().refine((value) => value, {
-        message: $t('authentication.verifyRequiredTip'),
-      }),
+      // rules: z.string().length(4, { message: '请输入正确的验证码' }),
     },
   ];
 });
