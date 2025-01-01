@@ -17,6 +17,7 @@ import {
 
 import { useVbenVxeGrid, type VxeTableGridOptions } from '#/adapter/vxe-table';
 import { ApiTask } from '#/api';
+import { ApiProject } from '#/api/control/project';
 
 import CFormModal from './modules/formModal.vue';
 import CImportModal from './modules/importModal.vue';
@@ -49,8 +50,15 @@ const formOptions: VbenFormProps = {
     },
     {
       fieldName: 'project_id',
-      component: 'Select',
+      component: 'ApiSelect',
       label: '项目',
+      componentProps: {
+        api: ApiProject.getProjectList,
+        allowClear: true,
+        labelField: 'name',
+        valueField: 'id',
+        class: 'w-full',
+      },
     },
   ],
 };
