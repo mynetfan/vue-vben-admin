@@ -19,6 +19,46 @@ export const useAuthStore = defineStore('auth', () => {
 
   const loginLoading = ref(false);
 
+  async function loginInit(
+    accessToken: string,
+    role: string,
+    onSuccess?: () => Promise<void> | void,
+  ) {
+    // 如果成功获取到 accessToken
+    if (accessToken) {
+      accessStore.setAccessToken(accessToken);
+      userStore.setUserRole(role);
+
+      // 获取用户信息并存储到 accessStore 中
+      // const [fetchUserInfoResult, accessCodes] = await Promise.all([
+      //   fetchUserInfo(),
+      //   getAccessCodesApi(),
+      // ]);
+
+      const userInfo = await fetchUserInfo();
+
+      userStore.setUserInfo(userInfo);
+      // accessStore.setAccessCodes(accessCodes);
+
+      if (accessStore.loginExpired) {
+        accessStore.setLoginExpired(false);
+      } else {
+        onSuccess
+          ? await onSuccess?.()
+          : await router.push(userInfo.homePath || DEFAULT_HOME_PATH);
+      }
+
+      if (userInfo?.realName) {
+        notification.success({
+          description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.realName}`,
+          duration: 3,
+          message: $t('authentication.loginSuccess'),
+        });
+      }
+      return userInfo;
+    }
+  }
+
   /**
    * 异步处理登录操作
    * Asynchronously handle the login process
@@ -29,43 +69,11 @@ export const useAuthStore = defineStore('auth', () => {
     onSuccess?: () => Promise<void> | void,
   ) {
     // 异步处理用户登录操作并获取 accessToken
-    let userInfo: null | UserInfo = null;
+    const userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
       const { access_token: accessToken, role } = await loginApi(params);
-
-      // 如果成功获取到 accessToken
-      if (accessToken) {
-        accessStore.setAccessToken(accessToken);
-        userStore.setUserRole(role);
-
-        // 获取用户信息并存储到 accessStore 中
-        // const [fetchUserInfoResult, accessCodes] = await Promise.all([
-        //   fetchUserInfo(),
-        //   getAccessCodesApi(),
-        // ]);
-
-        userInfo = await fetchUserInfo();
-
-        userStore.setUserInfo(userInfo);
-        // accessStore.setAccessCodes(accessCodes);
-
-        if (accessStore.loginExpired) {
-          accessStore.setLoginExpired(false);
-        } else {
-          onSuccess
-            ? await onSuccess?.()
-            : await router.push(userInfo.homePath || DEFAULT_HOME_PATH);
-        }
-
-        if (userInfo?.realName) {
-          notification.success({
-            description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.realName}`,
-            duration: 3,
-            message: $t('authentication.loginSuccess'),
-          });
-        }
-      }
+      await loginInit(accessToken, role, onSuccess);
     } finally {
       loginLoading.value = false;
     }
@@ -112,5 +120,6 @@ export const useAuthStore = defineStore('auth', () => {
     fetchUserInfo,
     loginLoading,
     logout,
+    loginInit,
   };
 });
