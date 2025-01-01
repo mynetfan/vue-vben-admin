@@ -28,7 +28,6 @@ async function generateRoutesByBackend(
     }
 
     const routes = convertRoutes(menuRoutes, layoutMap, normalizePageMap);
-
     return routes;
   } catch (error) {
     console.error(error);
@@ -55,12 +54,15 @@ function convertRoutes(
       // 页面组件转换
     } else if (component) {
       const normalizePath = normalizeViewPath(component);
-      route.component =
-        pageMap[
-          normalizePath.endsWith('.vue')
-            ? normalizePath
-            : `${normalizePath}.vue`
-        ];
+      if (Reflect.has(pageMap, normalizePath)) {
+        route.component = pageMap[normalizePath];
+      } else if (Reflect.has(pageMap, `${normalizePath}.vue`)) {
+        route.component = pageMap[`${normalizePath}.vue`];
+      } else if (Reflect.has(pageMap, `${normalizePath}/index.vue`)) {
+        route.component = pageMap[`${normalizePath}/index.vue`];
+      } else {
+        route.component = pageMap['/_core/fallback/coming-soon.vue'];
+      }
     }
 
     return route;

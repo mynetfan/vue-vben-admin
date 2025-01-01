@@ -1,4 +1,4 @@
-import type { BasicUserInfo } from '@vben-core/typings';
+import type { BasicUserInfo, PermissionCode } from '@vben-core/typings';
 
 import { acceptHMRUpdate, defineStore } from 'pinia';
 
@@ -7,6 +7,9 @@ interface AccessState {
    * 用户信息
    */
   userInfo: BasicUserInfo | null;
+  /** 用户权限范围 */
+  userPermission: PermissionCode;
+
   /**
    * 用户角色
    */
@@ -27,16 +30,35 @@ export const useUserStore = defineStore('core-user', {
             realName: userInfo?.name ?? '',
           }
         : null;
-      // 设置角色信息
-      // const roles = userInfo?.roles ?? [];
-      // this.setUserRoles(roles);
+      this.setUserPermission(userInfo?.permission ?? 4);
+      this.updateHomePath();
     },
+    setUserPermission(permission: PermissionCode) {
+      this.userPermission = permission;
+    },
+
     setUserRole(role: string) {
       this.userRole = role;
+      this.updateHomePath();
     },
+
+    updateHomePath() {
+      if (this.userInfo && !this.userInfo.homePath) {
+        if (this.userRole === 'super_admin') {
+          this.userInfo.homePath = '/setting/users';
+        } else if (this.userRole === 'admin') {
+          this.userInfo.homePath = '/control/project_task';
+        }
+      }
+    },
+  },
+  persist: {
+    // 持久化
+    pick: ['userRole'],
   },
   state: (): AccessState => ({
     userInfo: null,
+    userPermission: 4,
     userRole: '',
   }),
 });

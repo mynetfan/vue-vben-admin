@@ -128,9 +128,9 @@ watch(
       <UserDropdown
         :avatar
         :menus
+        :tag-text="userStore.userRole"
         :text="userStore.userInfo?.realName"
-        description="ann.vben@gmail.com"
-        tag-text="Pro"
+        description="更多信息在此显示"
         @logout="handleLogout"
       />
     </template>

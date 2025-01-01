@@ -8,17 +8,7 @@ type SelectOption = BasicOption;
 
 type TabOption = BasicOption;
 
-enum PermissionCode {
-  /** 全局 */
-  Global = 1,
-  /** 个人 */
-  Personal = 4,
-  /** 项目 */
-  Project = 2,
-  /** 标签组 */
-  TagGroup = 3,
-}
-
+type PermissionCode = 1 | 2 | 3 | 4;
 type DecryptType = 'hide' | 'md5' | 'none';
 interface BasicUserInfo {
   [key: string]: any;

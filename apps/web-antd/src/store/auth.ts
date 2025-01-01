@@ -99,7 +99,7 @@ export const useAuthStore = defineStore('auth', () => {
     let userInfo: null | UserInfo = null;
     userInfo = await getUserInfoApi();
     userStore.setUserInfo(userInfo);
-    return userInfo;
+    return userStore.userInfo as UserInfo;
   }
 
   function $reset() {
