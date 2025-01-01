@@ -1,13 +1,15 @@
 <script lang="ts" setup>
 import type { VbenFormSchema } from '@vben/common-ui';
-import type { BasicOption } from '@vben/types';
+import type { BasicOption, Recordable } from '@vben/types';
 
-import { computed, markRaw } from 'vue';
+import { computed, useTemplateRef } from 'vue';
 
-import { AuthenticationLogin, SliderCaptcha, z } from '@vben/common-ui';
+import { AuthenticationLogin, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
 import { useAuthStore } from '#/store';
+
+import ImgCodeInput from './img-code-input.vue';
 
 defineOptions({ name: 'Login' });
 
@@ -17,22 +19,22 @@ const PRESET_COMPANY: BasicOption[] = [
   {
     label: 'Admin',
     value: 'admin',
+    pwd: 'Admin@123',
   },
   {
     label: 'Test',
     value: 'test001',
+    pwd: 'Test@123',
   },
 ];
 
 const formSchema = computed((): VbenFormSchema[] => {
   return [
     {
-      component: 'Select',
+      component: 'VbenSelect',
       componentProps: {
         options: PRESET_COMPANY,
         placeholder: $t('authentication.selectAccount'),
-        class: 'w-full',
-        size: 'large',
       },
       fieldName: 'company',
       label: $t('authentication.selectAccount'),
@@ -55,15 +57,15 @@ const formSchema = computed((): VbenFormSchema[] => {
             );
             if (findUser) {
               form.setValues({
-                password: '123456',
-                username: findUser.value,
+                passwd: findUser.pwd,
+                name: findUser.value,
               });
             }
           }
         },
         triggerFields: ['company'],
       },
-      fieldName: 'username',
+      fieldName: 'name',
       label: $t('authentication.username'),
       rules: z.string().min(1, { message: $t('authentication.usernameTip') }),
     },
@@ -72,23 +74,42 @@ const formSchema = computed((): VbenFormSchema[] => {
       componentProps: {
         placeholder: $t('authentication.password'),
       },
-      fieldName: 'password',
+      fieldName: 'passwd',
       label: $t('authentication.password'),
       rules: z.string().min(1, { message: $t('authentication.passwordTip') }),
     },
     {
-      component: markRaw(SliderCaptcha),
-      fieldName: 'captcha',
-      // rules: z.string().length(4, { message: '请输入正确的验证码' }),
+      component: 'Input',
+      componentProps: { maxLength: 4 },
+      fieldName: 'verifyCode',
+      rules: z.string().length(4, { message: '请输入正确的验证码' }),
     },
   ];
 });
+
+const refImgCodeInput =
+  useTemplateRef<InstanceType<typeof ImgCodeInput>[]>('refImgCodeInput');
+const refLogin =
+  useTemplateRef<InstanceType<typeof AuthenticationLogin>>('refLogin');
+async function onSubmit(values: Recordable<any>) {
+  try {
+    await authStore.authLogin(values);
+  } catch {
+    refLogin.value?.getFormApi()?.setValues({ verifyCode: '' });
+    refImgCodeInput.value?.[0]?.refresh();
+  }
+}
 </script>
 
 <template>
   <AuthenticationLogin
+    ref="refLogin"
     :form-schema="formSchema"
     :loading="authStore.loginLoading"
-    @submit="authStore.authLogin"
-  />
+    @submit="onSubmit"
+  >
+    <template #form-verifyCode="slotProps">
+      <ImgCodeInput v-bind="slotProps" ref="refImgCodeInput" />
+    </template>
+  </AuthenticationLogin>
 </template>

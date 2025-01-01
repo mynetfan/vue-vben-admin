@@ -4,7 +4,14 @@ import type { VbenFormSchema } from '@vben-core/form-ui';
 
 import type { AuthenticationProps } from './types';
 
-import { computed, onMounted, reactive, ref } from 'vue';
+import {
+  computed,
+  onMounted,
+  reactive,
+  ref,
+  type SetupContext,
+  useSlots,
+} from 'vue';
 import { useRouter } from 'vue-router';
 
 import { $t } from '@vben/locales';
@@ -87,6 +94,13 @@ onMounted(() => {
 defineExpose({
   getFormApi: () => formApi,
 });
+
+const slots: SetupContext['slots'] = useSlots();
+const formSlots = computed(() => {
+  return Object.keys(slots)
+    .filter((key) => key.startsWith('form-'))
+    .map((v) => v.slice(5));
+});
 </script>
 
 <template>
@@ -105,8 +119,11 @@ defineExpose({
         </template>
       </Title>
     </slot>
-
-    <Form />
+    <Form>
+      <template v-for="slot in formSlots" #[slot]="slotProps">
+        <slot :name="`form-${slot}`" v-bind="slotProps"></slot>
+      </template>
+    </Form>
 
     <div
       v-if="showRememberMe || showForgetPassword"

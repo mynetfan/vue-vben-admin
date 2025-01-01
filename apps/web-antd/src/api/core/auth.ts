@@ -1,15 +1,22 @@
+import type { AxiosResponse } from '@vben/request';
+
+import { Md5 } from 'ts-md5';
+
 import { baseRequestClient, requestClient } from '#/api/request';
 
 export namespace AuthApi {
   /** 登录接口参数 */
   export interface LoginParams {
-    password?: string;
-    username?: string;
+    company?: string;
+    name?: string;
+    passwd?: string;
+    verifyCode?: string;
   }
 
   /** 登录接口返回值 */
   export interface LoginResult {
-    accessToken: string;
+    access_token: string;
+    role: string;
   }
 
   export interface RefreshTokenResult {
@@ -18,11 +25,27 @@ export namespace AuthApi {
   }
 }
 
+export async function getVerifyImg() {
+  return baseRequestClient.get<AxiosResponse<Blob>>('/verifyCode', {
+    responseType: 'blob',
+    withCredentials: true,
+  });
+}
+
 /**
  * 登录
  */
 export async function loginApi(data: AuthApi.LoginParams) {
-  return requestClient.post<AuthApi.LoginResult>('/auth/login', data);
+  const passwd =
+    data.passwd?.length === 32 ? data.passwd : Md5.hashStr(data.passwd || '');
+
+  return requestClient.post<AuthApi.LoginResult>(
+    '/login',
+    { ...data, passwd },
+    {
+      withCredentials: true,
+    },
+  );
 }
 
 /**
