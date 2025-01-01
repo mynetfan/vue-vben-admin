@@ -55,6 +55,7 @@ export {
   Sun,
   SunMoon,
   SwatchBook,
+  Upload,
   UserRoundPen,
   X,
 } from 'lucide-vue-next';

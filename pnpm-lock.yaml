@@ -96,6 +96,12 @@ catalogs:
     '@types/lodash.isequal':
       specifier: ^4.5.8
       version: 4.5.8
+    '@types/lodash.omit':
+      specifier: ^4.5.0
+      version: 4.5.9
+    '@types/lodash.pick':
+      specifier: ^4.4.0
+      version: 4.4.9
     '@types/node':
       specifier: ^22.10.2
       version: 22.10.2
@@ -295,7 +301,7 @@ catalogs:
       specifier: ^15.2.11
       version: 15.2.11
     lodash.clonedeep:
-      specifier: ^4.5.0
+      specifier: ^4.4.0
       version: 4.5.0
     lodash.get:
       specifier: ^4.4.2
@@ -303,6 +309,12 @@ catalogs:
     lodash.isequal:
       specifier: ^4.5.0
       version: 4.5.0
+    lodash.omit:
+      specifier: ^4.5.0
+      version: 4.5.0
+    lodash.pick:
+      specifier: ^4.4.0
+      version: 4.4.0
     lucide-vue-next:
       specifier: ^0.469.0
       version: 0.469.0
@@ -677,6 +689,9 @@ importers:
       dayjs:
         specifier: 'catalog:'
         version: 1.11.13
+      iconv-lite:
+        specifier: ^0.6.3
+        version: 0.6.3
       pinia:
         specifier: 2.2.2
         version: 2.2.2(typescript@5.7.2)(vue@3.5.13(typescript@5.7.2))
@@ -1231,6 +1246,12 @@ importers:
       lodash.isequal:
         specifier: 'catalog:'
         version: 4.5.0
+      lodash.omit:
+        specifier: 'catalog:'
+        version: 4.5.0
+      lodash.pick:
+        specifier: 'catalog:'
+        version: 4.4.0
       nprogress:
         specifier: 'catalog:'
         version: 0.2.0
@@ -1250,6 +1271,12 @@ importers:
       '@types/lodash.isequal':
         specifier: 'catalog:'
         version: 4.5.8
+      '@types/lodash.omit':
+        specifier: 'catalog:'
+        version: 4.5.9
+      '@types/lodash.pick':
+        specifier: 'catalog:'
+        version: 4.4.9
       '@types/nprogress':
         specifier: 'catalog:'
         version: 0.2.3
@@ -4325,6 +4352,12 @@ packages:
   '@types/lodash.isequal@4.5.8':
     resolution: {integrity: sha512-uput6pg4E/tj2LGxCZo9+y27JNyB2OZuuI/T5F+ylVDYuqICLG2/ktjxx0v6GvVntAf8TvEzeQLcV0ffRirXuA==}
 
+  '@types/lodash.omit@4.5.9':
+    resolution: {integrity: sha512-zuAVFLUPJMOzsw6yawshsYGgq2hWUHtsZgeXHZmSFhaQQFC6EQ021uDKHkSjOpNhSvtNSU9165/o3o/Q51GpTw==}
+
+  '@types/lodash.pick@4.4.9':
+    resolution: {integrity: sha512-hDpr96x9xHClwy1KX4/RXRejqjDFTEGbEMT3t6wYSYeFDzxmMnSKB/xHIbktRlPj8Nii2g8L5dtFDRaNFBEzUQ==}
+
   '@types/lodash@4.17.13':
     resolution: {integrity: sha512-lfx+dftrEZcdBPczf9d0Qv0x+j/rfNCMuC6OcfXmO8gkfeNAY88PgKUbvG56whcN23gc27yenwF6oJZXGFpYxg==}
 
@@ -7367,8 +7400,14 @@ packages:
   lodash.mergewith@4.6.2:
     resolution: {integrity: sha512-GK3g5RPZWTRSeLSpgP8Xhra+pnjBC56q9FZYe1d5RN3TJ35dbkGy3YqBSMbyCrlbi+CM9Z3Jk5yTL7RCsqboyQ==}
 
+  lodash.omit@4.5.0:
+    resolution: {integrity: sha512-XeqSp49hNGmlkj2EJlfrQFIzQ6lXdNro9sddtQzcJY8QaoC2GO0DT7xaIokHeyM+mIT0mPMlPvkYzg2xCuHdZg==}
+
   lodash.once@4.1.1:
     resolution: {integrity: sha512-Sb487aTOCr9drQVL8pIxOzVhafOjZN9UU54hiN8PU3uAiSV7lx1yYNpbNmex2PK6dSJoNTSJUUswT651yww3Mg==}
+
+  lodash.pick@4.4.0:
+    resolution: {integrity: sha512-hXt6Ul/5yWjfklSGvLQl8vM//l3FtyHZeuelpzK6mm99pNvN9yTDruNZPEJZD1oWrqo+izBmB7oUfWgcCX7s4Q==}
 
   lodash.snakecase@4.1.1:
     resolution: {integrity: sha512-QZ1d4xoBHYUeuouhEq3lk3Uq7ldgyFXGBhg04+oRLnIz8o9T65Eh+8YdroUwn846zchkA9yDsDl5CVVaV2nqYw==}
@@ -13255,6 +13294,14 @@ snapshots:
     dependencies:
       '@types/lodash': 4.17.13
 
+  '@types/lodash.omit@4.5.9':
+    dependencies:
+      '@types/lodash': 4.17.13
+
+  '@types/lodash.pick@4.4.9':
+    dependencies:
+      '@types/lodash': 4.17.13
+
   '@types/lodash@4.17.13': {}
 
   '@types/markdown-it@14.1.2':
@@ -16702,7 +16749,11 @@ snapshots:
 
   lodash.mergewith@4.6.2: {}
 
+  lodash.omit@4.5.0: {}
+
   lodash.once@4.1.1: {}
+
+  lodash.pick@4.4.0: {}
 
   lodash.snakecase@4.1.1: {}
 

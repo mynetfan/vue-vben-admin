@@ -17,3 +17,5 @@ export * from './window';
 export { default as cloneDeep } from 'lodash.clonedeep';
 export { default as get } from 'lodash.get';
 export { default as isEqual } from 'lodash.isequal';
+export { default as omit } from 'lodash.omit';
+export { default as pick } from 'lodash.pick';

@@ -78,9 +78,11 @@ function createRequestClient(baseURL: string) {
   client.addResponseInterceptor<HttpResponse>({
     fulfilled: (response) => {
       const { data: responseData, status } = response;
-
-      const { data, msg } = responseData;
+      const { data, msg, count } = responseData;
       if (status >= 200 && status < 400 && msg === 'success') {
+        if (count !== undefined) {
+          return { data, total: count };
+        }
         return data;
       }
 

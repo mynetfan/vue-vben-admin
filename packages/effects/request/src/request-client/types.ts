@@ -40,6 +40,7 @@ interface HttpResponse<T = any> {
   code: number;
   data: T;
   msg: string;
+  [key: string]: any;
 }
 
 export type {
