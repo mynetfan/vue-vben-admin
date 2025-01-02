@@ -45,7 +45,9 @@ export const useAuthStore = defineStore('auth', () => {
       } else {
         onSuccess
           ? await onSuccess?.()
-          : await router.push(userInfo.homePath || DEFAULT_HOME_PATH);
+          : await router.push(
+              userStore.userInfo?.homePath || DEFAULT_HOME_PATH,
+            );
       }
 
       if (userInfo?.realName) {
@@ -55,7 +57,9 @@ export const useAuthStore = defineStore('auth', () => {
           message: $t('authentication.loginSuccess'),
         });
       }
-      return userInfo;
+      return userStore.userInfo as UserInfo;
+    } else {
+      return null;
     }
   }
 
@@ -69,11 +73,11 @@ export const useAuthStore = defineStore('auth', () => {
     onSuccess?: () => Promise<void> | void,
   ) {
     // 异步处理用户登录操作并获取 accessToken
-    const userInfo: null | UserInfo = null;
+    let userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
       const { access_token: accessToken, role } = await loginApi(params);
-      await loginInit(accessToken, role, onSuccess);
+      userInfo = await loginInit(accessToken, role, onSuccess);
     } finally {
       loginLoading.value = false;
     }
