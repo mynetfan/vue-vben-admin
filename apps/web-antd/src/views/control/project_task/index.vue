@@ -77,7 +77,13 @@ const gridOptions: VxeTableGridOptions = {
     { field: 'outboundType', title: '外呼类型' },
     { field: 'noCalls', title: '未呼数' },
     { field: 'total', title: '总数' },
-    { field: 'action', title: '操作', slots: { default: 'action' } },
+    {
+      field: 'action',
+      title: '操作',
+      slots: { default: 'action' },
+      fixed: 'right',
+      width: 200,
+    },
   ],
   proxyConfig: {
     ajax: {

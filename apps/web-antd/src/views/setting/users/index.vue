@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router';
 
 import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
 import { DEFAULT_HOME_PATH } from '@vben/constants';
-import { useAccessStore, useUserStore } from '@vben/stores';
+import { useAccessStore, useTabbarStore, useUserStore } from '@vben/stores';
 
 import { Button, message, Modal, Popconfirm, Tag } from 'ant-design-vue';
 
@@ -147,6 +147,7 @@ const authStore = useAuthStore();
 const router = useRouter();
 const accessStore = useAccessStore();
 const userStore = useUserStore();
+const tabbarStore = useTabbarStore();
 async function handleQuickLogin(row: ApiUsers.UserModel) {
   const hideMsg = message.loading({
     content: '正在获取快捷登陆信息...',
@@ -171,12 +172,12 @@ async function handleQuickLogin(row: ApiUsers.UserModel) {
             router,
             routes: [],
           });
-
           // 保存菜单信息和路由信息
           accessStore.setAccessMenus(accessibleMenus);
           accessStore.setAccessRoutes(accessibleRoutes);
           accessStore.setIsAccessChecked(true);
-          router.push(userStore.userInfo?.homePath || DEFAULT_HOME_PATH);
+          tabbarStore.tabs = [];
+          await router.push(userStore.userInfo?.homePath || DEFAULT_HOME_PATH);
         });
       },
     });
