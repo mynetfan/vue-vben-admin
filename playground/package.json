@@ -16,9 +16,11 @@
   },
   "type": "module",
   "scripts": {
-    "build": "pnpm vite build --mode production",
+    "build": "tauri build",
     "build:analyze": "pnpm vite build --mode analyze",
-    "dev": "pnpm vite --mode development",
+    "build:web": "pnpm vite build --mode production",
+    "dev": "tauri dev",
+    "dev:web": "pnpm vite --mode development",
     "preview": "vite preview",
     "typecheck": "vue-tsc --noEmit --skipLibCheck",
     "test:e2e": "playwright test",
@@ -51,5 +53,8 @@
     "pinia": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "catalog:"
   }
 }
