@@ -1,3 +1,5 @@
+import { WebviewWindow } from '@tauri-apps/api/webviewWindow';
+
 interface OpenWindowOptions {
   noopener?: boolean;
   noreferrer?: boolean;
@@ -31,7 +33,17 @@ function openRouteInNewWindow(path: string) {
   const { hash, origin } = location;
   const fullPath = path.startsWith('/') ? path : `/${path}`;
   const url = `${origin}${hash ? '/#' : ''}${fullPath}`;
-  openWindow(url, { target: '_blank' });
+  // openWindow(url, { target: '_blank' });
+  const label = `sub_${Math.random().toString(36).slice(2, 11)}`;
+  const webWindow = new WebviewWindow(label, {
+    // @ts-ignore for vite
+    title: import.meta.env.VITE_APP_NAME,
+    url,
+  });
+
+  webWindow.once('tauri://webview-created', (_event) => {
+    // console.log('webview-created', _event);
+  });
 }
 
 export { openRouteInNewWindow, openWindow };

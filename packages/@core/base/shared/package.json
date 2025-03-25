@@ -81,6 +81,7 @@
   "dependencies": {
     "@ctrl/tinycolor": "catalog:",
     "@tanstack/vue-store": "catalog:",
+    "@tauri-apps/api": "catalog:",
     "@vue/shared": "catalog:",
     "clsx": "catalog:",
     "dayjs": "catalog:",
