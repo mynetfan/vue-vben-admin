@@ -7,6 +7,7 @@ import { initStores } from '@vben/stores';
 import '@vben/styles';
 import '@vben/styles/antd';
 
+import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
 import { useTitle } from '@vueuse/core';
 
 import { $t, setupI18n } from '#/locales';
@@ -67,6 +68,8 @@ async function bootstrap(namespace: string) {
       const pageTitle =
         (routeTitle ? `${$t(routeTitle)} - ` : '') + preferences.app.name;
       useTitle(pageTitle);
+      const tauriWin = getCurrentWebviewWindow();
+      tauriWin.setTitle(pageTitle);
     }
   });
 
