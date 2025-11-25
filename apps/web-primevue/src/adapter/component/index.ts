@@ -186,7 +186,6 @@ async function initComponentAdapter() {
         });
       } catch {
         // Toast service may not be available outside of setup context
-        console.info(`${title}: ${content}`);
       }
     },
   });

@@ -10,7 +10,6 @@ import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 import { defineStore } from 'pinia';
 
 import { getAccessCodesApi, getUserInfoApi, loginApi, logoutApi } from '#/api';
-import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
   const accessStore = useAccessStore();
@@ -59,12 +58,7 @@ export const useAuthStore = defineStore('auth', () => {
               );
         }
 
-        if (userInfo?.realName) {
-          // Log success message - toast notification handled at component level
-          console.info(
-            `${$t('authentication.loginSuccess')}: ${$t('authentication.loginSuccessDesc')}:${userInfo?.realName}`,
-          );
-        }
+        // Login success notification can be handled at component level if needed
       }
     } finally {
       loginLoading.value = false;

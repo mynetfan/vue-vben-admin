@@ -1,12 +1,11 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, getCurrentInstance, watchEffect } from 'vue';
 
 import { usePreferences } from '@vben/preferences';
 
 import Aura from '@primevue/themes/aura';
 import PrimeVue from 'primevue/config';
 import ToastService from 'primevue/toastservice';
-import { getCurrentInstance } from 'vue';
 
 defineOptions({ name: 'App' });
 
@@ -30,16 +29,14 @@ if (app && !app.config.globalProperties.$primevue) {
 
 // Apply dark mode class to document
 const applyTheme = computed(() => {
-  if (isDark.value) {
-    document.documentElement.classList.add('dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-  }
+  document.documentElement.classList.toggle('dark', isDark.value);
   return isDark.value;
 });
 
-// Trigger the computed
-applyTheme.value;
+// Watch and apply theme changes
+watchEffect(() => {
+  return applyTheme.value;
+});
 </script>
 
 <template>

@@ -51,7 +51,7 @@ const formSchema = computed((): VbenFormSchema[] => {
 });
 
 function handleSubmit() {
-  console.info('密码修改成功');
+  // Password change success - notification handled by the form component
 }
 </script>
 <template>

@@ -8,7 +8,6 @@ import { preferences } from '@vben/preferences';
 
 import { getAllMenusApi } from '#/api';
 import { BasicLayout, IFrameView } from '#/layouts';
-import { $t } from '#/locales';
 
 const forbiddenComponent = () => import('#/views/_core/fallback/forbidden.vue');
 
@@ -23,8 +22,7 @@ async function generateAccess(options: GenerateMenuAndRoutesOptions) {
   return await generateAccessible(preferences.app.accessMode, {
     ...options,
     fetchMenuListAsync: async () => {
-      // Loading message handled by the loading indicator
-      console.info(`${$t('common.loadingMenu')}...`);
+      // Menu loading in progress
       return await getAllMenusApi();
     },
     // 可以指定没有权限跳转403页面
