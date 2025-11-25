@@ -131,6 +131,9 @@ catalog:
   ora: ^8.2.0
   pinia: ^3.0.3
   pinia-plugin-persistedstate: ^4.4.1
+  '@primevue/themes': ^4.3.3
+  primeicons: ^7.0.0
+  primevue: ^4.3.3
   pkg-types: ^2.2.0
   playwright: ^1.56.1
   postcss: ^8.5.6
